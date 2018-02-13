@@ -1,7 +1,7 @@
 
 library(shiny)
 library(tidyverse)
-
+library(shinythemes)
 
 
 #Goleta bacteria dataset
@@ -10,7 +10,6 @@ gol_bac <- read_csv("~/Desktop/github/SB-Water-Quality/gol_bac.csv")
 #Filtered for two bacteria, and lagoon water/simplify
 gol_b<-gol_bac %>% 
   select(StationID,SampleDate,TestMaterial,ParameterCode,Result) %>% 
-  filter(ParameterCode=="E. Coli"|ParameterCode=="Enterococcus") %>% 
   filter(TestMaterial=="Lagoon Water")
 colnames(gol_b)<-c("stationid","date","testmaterial","parametercode","result")
 
@@ -32,7 +31,7 @@ rain$date <- as.Date(with(rain, paste(year, month, day,sep="-")), "%Y-%m-%d")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-   
+  shinythemes::themeSelector(),
    # Application title
    titlePanel("SB Water Quality"),
    
@@ -45,7 +44,7 @@ ui <- fluidPage(
        selectInput("parametercode","Parameter Code:",choices = unique(gol_b$parametercode)),
        
        # Input: Slider for the number of bins ----
-       sliderInput(inputId = "Year",
+       sliderInput(inputId = "date",
                    label = "Year",
                    min = 2002,
                    max = 2017,
@@ -69,10 +68,14 @@ server <- function(input, output) {
       p<-input$parametercode
       
       # draw the histogram with the specified number of bins
-      ggplot(subset(gol_b,parametercode==p),aes(x=date,y=result,color=stationid,size=0.1))+
+      ggplot(subset(gol_b,year=date,parametercode==p),aes(x=date,y=result,color=stationid,alpha==0.3))+
         geom_point()+
         theme_bw()+
-        coord_cartesian(ylim = c(0, 6000))
+        ggtitle("Goleta Bacteria Data")+
+        theme(plot.title = element_text(hjust = 0.5))+
+        xlab("Sample Date")+
+        ylab("MPN/100mL")+
+        coord_cartesian(ylim = c(0, 10000))
    })
 }
 
