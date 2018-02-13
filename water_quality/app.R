@@ -38,12 +38,18 @@ ui <- fluidPage(
    
    # Sidebar with a slider input for number of bins 
    sidebarLayout(
-      sidebarPanel(
-         sliderInput("date",
-                     "Date",
-                     min = 2009,
-                     max = 2017,
-                     value = 2013)
+     
+     # Sidebar panel for inputs ----
+     sidebarPanel(
+       
+       selectInput("parametercode","Parameter Code:",choices = unique(gol_b$parametercode)),
+       
+       # Input: Slider for the number of bins ----
+       sliderInput(inputId = "Year",
+                   label = "Year",
+                   min = 2002,
+                   max = 2017,
+                   value = 2017)
       ),
       
       
@@ -60,10 +66,10 @@ server <- function(input, output) {
    output$distPlot <- renderPlot({
       # generate bins based on input$bins from ui.R
       x <- gol_b$result 
-      year<-input$date
+      p<-input$parametercode
       
       # draw the histogram with the specified number of bins
-      ggplot(subset(gol_b,date==date),aes(x=date,y=result,color=stationid,size=0.1))+
+      ggplot(subset(gol_b,parametercode==p),aes(x=date,y=result,color=stationid,size=0.1))+
         geom_point()+
         theme_bw()+
         coord_cartesian(ylim = c(0, 6000))
