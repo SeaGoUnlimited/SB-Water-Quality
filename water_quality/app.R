@@ -5,7 +5,7 @@ library(shinythemes)
 
 
 #Goleta bacteria dataset
-gol_bac <- read_csv("~/Desktop/github/SB-Water-Quality/gol_bac.csv")
+gol_bac <- read_csv("~/github/SB-Water-Quality/gol_bac.csv")
 
 #Filtered for two bacteria, and lagoon water/simplify
 gol_b<-gol_bac %>% 
@@ -16,13 +16,13 @@ colnames(gol_b)<-c("stationid","date","testmaterial","parametercode","result")
 
 
 #rainfall dataset
-Goleta_water_district_rainfall <- read_csv("~/Desktop/github/SB-Water-Quality/Goleta_water_district_rainfall.csv")
+#Goleta_water_district_rainfall <- read_csv("~/Desktop/github/SB-Water-Quality/Goleta_water_district_rainfall.csv")
 
 #rename 
-rain<-Goleta_water_district_rainfall
+#rain<-Goleta_water_district_rainfall
 
 #combine year,month,day into new "date" column
-rain$date <- as.Date(with(rain, paste(year, month, day,sep="-")), "%Y-%m-%d")
+#rain$date <- as.Date(with(rain, paste(year, month, day,sep="-")), "%Y-%m-%d")
 
 
 
