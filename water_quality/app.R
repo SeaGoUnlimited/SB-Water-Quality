@@ -62,6 +62,11 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
    
+  #output$sb_map <- renderLeaflet ({
+  #sb_map<-leaflet() %>% 
+  # addTiles() %>% 
+  #addMarkers(lng=-119.6982, lat=34.4208, popup="Zooming maps")}
+  
    output$distPlot <- renderPlot({
       # generate bins based on input$bins from ui.R
       x <- gol_b$result 
