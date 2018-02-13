@@ -3,6 +3,8 @@ library(shiny)
 library(tidyverse)
 library(shinythemes)
 
+###############################################
+
 
 #Goleta bacteria dataset
 gol_bac <- read_csv("~/github/SB-Water-Quality/gol_bac.csv")
@@ -12,6 +14,7 @@ gol_bac <- read_csv("~/github/SB-Water-Quality/gol_bac.csv")
 gol_b<-gol_bac %>% 
   select(StationID,SampleDate,TestMaterial,ParameterCode,Result) %>% 
   filter(TestMaterial=="Lagoon Water")
+
 colnames(gol_b)<-c("stationid","date","testmaterial","parametercode","result")
 
 #Goleta chemical dataset
@@ -26,6 +29,8 @@ colnames(gol_c)<-c("stationid","date","testmaterial","parametercode","result")
 #combine bacteria and chem datasets
 gol_b_c<-rbind(gol_b,gol_c)
 
+#####################################
+
 
 #rainfall dataset
 Goleta_water_district_rainfall <- read_csv("~/github/SB-Water-Quality/Goleta_water_district_rainfall.csv")
@@ -33,12 +38,10 @@ Goleta_water_district_rainfall <- read_csv("~/github/SB-Water-Quality/Goleta_wat
 #rename 
 rain<-Goleta_water_district_rainfall
 
-
 #combine year,month,day into new "date" column
 rain$date <- as.Date(with(rain, paste(year, month, day,sep="-")), "%Y-%m-%d")
 
-
-
+##############################################
 
 
 
@@ -56,12 +59,11 @@ ui <- fluidPage(
        
        selectInput("parametercode","Parameter Code:",choices = unique(gol_b_c$parametercode)),
        
-       # Input: Slider for the number of bins ----
-       sliderInput(inputId = "date",
-                   label = "Year",
-                   min = 2002,
-                   max = 2017,
-                   value = 2017)
+       # Input: 
+       dateRangeInput("date", "Date range:",
+                      start = "2001-01-01",
+                      end   = "2017-12-31")
+       
       ),
       
       
@@ -84,9 +86,10 @@ server <- function(input, output) {
       # generate bins based on input$bins from ui.R
       x <- gol_b_c$result 
       p<-input$parametercode
+      Date<-input$date
       
       # draw the histogram with the specified number of bins
-      ggplot(subset(gol_b_c,year=date,parametercode==p),aes(x=date,y=result,color=stationid,alpha==0.3))+
+      ggplot(subset(gol_b_c,year=Date,parametercode==p),aes(x=date,y=result,color=stationid,alpha==0.3))+
         geom_point()+
         theme_bw()+
         ggtitle("Goleta Bacteria Data")+
