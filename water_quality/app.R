@@ -14,6 +14,17 @@ gol_b<-gol_bac %>%
   filter(TestMaterial=="Lagoon Water")
 colnames(gol_b)<-c("stationid","date","testmaterial","parametercode","result")
 
+#Goleta chemical dataset
+goleta_chem_sbck <- read_csv("~/github/SB-Water-Quality/goleta_chem_sbck.csv")
+View(goleta_chem_sbck)
+
+gol_c<-goleta_chem_sbck %>% 
+  select(StationID,SampleDate,TestMaterial,ParameterCode,Result) %>% 
+  filter(TestMaterial=="Lagoon Water")
+colnames(gol_c)<-c("stationid","date","testmaterial","parametercode","result")
+
+#combine bacteria and chem datasets
+gol_b_c<-rbind(gol_b,gol_c)
 
 
 #rainfall dataset
@@ -43,7 +54,7 @@ ui <- fluidPage(
      # Sidebar panel for inputs ----
      sidebarPanel(
        
-       selectInput("parametercode","Parameter Code:",choices = unique(gol_b$parametercode)),
+       selectInput("parametercode","Parameter Code:",choices = unique(gol_b_c$parametercode)),
        
        # Input: Slider for the number of bins ----
        sliderInput(inputId = "date",
@@ -71,17 +82,17 @@ server <- function(input, output) {
   
    output$distPlot <- renderPlot({
       # generate bins based on input$bins from ui.R
-      x <- gol_b$result 
+      x <- gol_b_c$result 
       p<-input$parametercode
       
       # draw the histogram with the specified number of bins
-      ggplot(subset(gol_b,year=date,parametercode==p),aes(x=date,y=result,color=stationid,alpha==0.3))+
+      ggplot(subset(gol_b_c,year=date,parametercode==p),aes(x=date,y=result,color=stationid,alpha==0.3))+
         geom_point()+
         theme_bw()+
         ggtitle("Goleta Bacteria Data")+
         theme(plot.title = element_text(hjust = 0.5))+
         xlab("Sample Date")+
-        ylab("MPN/100mL")+
+        ylab("Result unit...")+
         coord_cartesian(ylim = c(0, 10000))
    })
 }
