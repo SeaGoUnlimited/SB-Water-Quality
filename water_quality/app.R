@@ -29,6 +29,8 @@ colnames(gol_c)<-c("stationid","date","testmaterial","parametercode","result")
 #combine bacteria and chem datasets
 gol_b_c<-rbind(gol_b,gol_c)
 
+gol_b_c$date<-as.Date(gol_b_c$date)
+
 #####################################
 
 
@@ -51,8 +53,8 @@ ui <- fluidPage(
    # Application title
    titlePanel("SB Water Quality"),
    
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
      
      # Sidebar panel for inputs ----
      sidebarPanel(
@@ -61,7 +63,7 @@ ui <- fluidPage(
        
        # Input: 
        dateRangeInput("date", "Date range:",
-                      start = "2001-01-01",
+                      start = "2004-01-01",
                       end   = "2017-12-31")
        
       ),
@@ -86,10 +88,10 @@ server <- function(input, output) {
       # generate bins based on input$bins from ui.R
       x <- gol_b_c$result 
       p<-input$parametercode
-      Date<-input$date
+      y<-input$date
       
       # draw the histogram with the specified number of bins
-      ggplot(subset(gol_b_c,year=Date,parametercode==p),aes(x=date,y=result,color=stationid,alpha==0.3))+
+      ggplot(subset(gol_b_c,date=y,parametercode==p),aes(x=date,y=result,color=stationid,alpha==0.3))+
         geom_point()+
         theme_bw()+
         ggtitle("Goleta Bacteria Data")+
