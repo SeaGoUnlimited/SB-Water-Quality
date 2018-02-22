@@ -24,12 +24,17 @@ View(goleta_chem_sbck)
 gol_c<-goleta_chem_sbck %>% 
   select(StationID,SampleDate,TestMaterial,ParameterCode,Result) %>% 
   filter(TestMaterial=="Lagoon Water")
+
 colnames(gol_c)<-c("stationid","date","testmaterial","parametercode","result")
 
 #combine bacteria and chem datasets
 gol_b_c<-rbind(gol_b,gol_c)
 
+
+
 gol_b_c$date<-as.Date(gol_b_c$date)
+
+
 
 #####################################
 
@@ -61,22 +66,24 @@ ui <- fluidPage(
        
        selectInput("parametercode","Parameter Code:",choices = unique(gol_b_c$parametercode)),
        
+       selectInput("station","Station ID:",choices = unique(gol_b_c$stationid)),
+       
        # Input: 
        dateRangeInput("date", "Date range:",
-                      start = "2004-01-01",
+                      start = "2002-01-01",
                       end   = "2017-12-31")
        
       ),
       
       
-      # Show a plot of the generated distribution
+    
       mainPanel(
          plotOutput("distPlot")
       )
    )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic 
 server <- function(input, output) {
    
   #output$sb_map <- renderLeaflet ({
@@ -88,17 +95,20 @@ server <- function(input, output) {
       # generate bins based on input$bins from ui.R
       x <- gol_b_c$result 
       p<-input$parametercode
-      y<-input$date
+      d<-input$date
+      id<-input$station
       
       # draw the histogram with the specified number of bins
-      ggplot(subset(gol_b_c,date=y,parametercode==p),aes(x=date,y=result,color=stationid,alpha==0.3))+
+      ggplot(subset(gol_b_c,parametercode==p),aes(date,result,color=stationid,0.3))+
         geom_point()+
         theme_bw()+
         ggtitle("Goleta Bacteria Data")+
         theme(plot.title = element_text(hjust = 0.5))+
         xlab("Sample Date")+
         ylab("Result unit...")+
-        coord_cartesian(ylim = c(0, 10000))
+        coord_cartesian(ylim = c(0, 10000))+
+        xlim(d)
+      
    })
 }
 
