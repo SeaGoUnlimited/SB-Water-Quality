@@ -2,6 +2,7 @@
 library(shiny)
 library(tidyverse)
 library(shinythemes)
+library(leaflet)
 
 ###############################################
 
@@ -12,8 +13,7 @@ gol_bac <- read_csv("~/github/SB-Water-Quality/gol_bac.csv")
 
 #Filtered for two bacteria, and lagoon water/simplify
 gol_b<-gol_bac %>% 
-  select(StationID,SampleDate,TestMaterial,ParameterCode,Result) %>% 
-  filter(TestMaterial=="Lagoon Water")
+  select(StationID,SampleDate,TestMaterial,ParameterCode,Result) 
 
 colnames(gol_b)<-c("stationid","date","testmaterial","parametercode","result")
 
@@ -22,8 +22,7 @@ goleta_chem_sbck <- read_csv("~/github/SB-Water-Quality/goleta_chem_sbck.csv")
 View(goleta_chem_sbck)
 
 gol_c<-goleta_chem_sbck %>% 
-  select(StationID,SampleDate,TestMaterial,ParameterCode,Result) %>% 
-  filter(TestMaterial=="Lagoon Water")
+  select(StationID,SampleDate,TestMaterial,ParameterCode,Result) 
 
 colnames(gol_c)<-c("stationid","date","testmaterial","parametercode","result")
 
@@ -78,7 +77,9 @@ ui <- fluidPage(
       
     
       mainPanel(
-         plotOutput("distPlot")
+         plotOutput("distPlot"),
+         
+         leafletOutput("MapPlot1")
       )
    )
 )
@@ -86,9 +87,16 @@ ui <- fluidPage(
 # Define server logic 
 server <- function(input, output) {
    
+  output$MapPlot1 <- renderLeaflet({
+    leaflet() %>% 
+      addTiles() %>% 
+      setView(-119.847250,34.408614,zoom = 13) %>% 
+      addMarkers(lng = -119.826228, lat = 34.417057, popup="Goleta Slough") %>% 
+      addMarkers(lng=-119.874244,lat=34.417040,popup="Devereux Slough")
+  })
   #output$sb_map <- renderLeaflet ({
   #sb_map<-leaflet() %>% 
-  # addTiles() %>% 
+   #addTiles() %>% 
   #addMarkers(lng=-119.6982, lat=34.4208, popup="Zooming maps")}
   
    output$distPlot <- renderPlot({
