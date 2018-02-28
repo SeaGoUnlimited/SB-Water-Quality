@@ -27,10 +27,22 @@ gol_c<-goleta_chem_sbck %>%
 
 colnames(gol_c)<-c("stationid","date","testmaterial","parametercode","result")
 
+
+gol_cond<-gol_c %>% 
+  filter(parametercode=="Conductivity")
+
+gol_temp<-gol_c %>% 
+  filter(parametercode=="Temp")
+
+gol_turb<-gol_c %>% 
+  filter(parametercode=="TURB")
+
+gol_ph<-gol_c %>% 
+  filter(parametercode=="pH")
+
+
 #combine bacteria and chem datasets
 gol_b_c<-rbind(gol_b,gol_c)
-
-
 
 gol_b_c$date<-as.Date(gol_b_c$date)
 
@@ -54,40 +66,8 @@ rain$date <- as.Date(with(rain, paste(year, month, day,sep="-")), "%Y-%m-%d")
 
 
 
-gol_b<-gol_bac %>% 
-  select(StationID,SampleDate,TestMaterial,ParameterCode,Result) 
 
-colnames(gol_b)<-c("stationid","date","testmaterial","parametercode","result")
-
-#Goleta chemical dataset
-goleta_chem_sbck <- read_csv("~/github/SB-Water-Quality/goleta_chem_sbck.csv")
-View(goleta_chem_sbck)
-
-gol_c<-goleta_chem_sbck %>% 
-  select(StationID,SampleDate,TestMaterial,ParameterCode,Result) 
-
-colnames(gol_c)<-c("stationid","date","testmaterial","parametercode","result")
-
-gol_cond<-gol_c %>% 
-  filter(parametercode=="Conductivity")
-
-
-gol_temp<-gol_c %>% 
-  filter(parametercode=="Temp")
-
-gol_turb<-gol_c %>% 
-  filter(parametercode=="TURB")
-
-gol_ph<-gol_c %>% 
-  filter(parametercode=="pH")
-
-#combine bacteria and chem datasets
-gol_b_c<-rbind(gol_b,gol_c)
-
-
-
-gol_b_c$date<-as.Date(gol_b_c$date)
-
+###########################################
 
 
 
@@ -116,7 +96,7 @@ ui <- dashboardPage(
                 box(plotOutput("my_graph1",height = 700,width = 700)),
                 box(title = "choose FIB:",
                     selectInput("parametercode","Parameter Code:",choices = unique(gol_b$parametercode)),
-                    selectInput("station","Station ID:",choices = unique(gol_b$stationid)),
+                    selectInput("Stationid","Station ID:",choices = unique(gol_b$stationid)),
                     dateRangeInput("date", "Date range:",
                                    start = "2002-01-01",
                                    end   = "2017-12-31")
@@ -140,7 +120,7 @@ ui <- dashboardPage(
                 box(plotOutput("my_graph3",height = 700,width=700)),
                 box(title = "conductivity",
                     
-                    selectInput("stationid","Station ID:",choices = unique(gol_c$stationid)),
+                    selectInput("stationId","Station ID:",choices = unique(gol_c$stationid)),
                     
                     # Input: 
                     dateRangeInput("date3", "Date range:",
@@ -153,7 +133,7 @@ ui <- dashboardPage(
                 box(plotOutput("my_graph4",height = 700,width=700)),
                 box(title = "Temperature",
                     
-                    selectInput("stationid","Station ID:",choices = unique(gol_temp$stationid)),
+                    selectInput("stationID","Station ID:",choices = unique(gol_temp$stationid)),
                     
                     # Input: 
                     dateRangeInput("date4", "Date range:",
@@ -180,7 +160,7 @@ server <- function(input,output){
     x <- gol_b$result 
     p<-input$parametercode
     d<-input$date
-    id<-input$station
+    id<-input$Stationid
     
     ggplot(subset(gol_b_c,parametercode==p),aes(date,result,color=stationid,0.3))+
       geom_point()+
@@ -199,7 +179,7 @@ server <- function(input,output){
     x <- gol_b_c$result 
     y<-input$chem
     d<-input$date2
-    id<-input$station
+    id<-input$stationid
     
     ggplot(subset(gol_b_c,parametercode==y),aes(date,result,color=stationid,0.3))+
       geom_point()+
@@ -217,7 +197,7 @@ server <- function(input,output){
     
     
     d<-input$date3
-    id<-input$stationid
+    id<-input$stationId
     
     ggplot(subset(gol_cond,stationid==id),aes(date,result,0.4))+
       geom_point(color="blue")+
@@ -234,7 +214,7 @@ server <- function(input,output){
     
     
     d<-input$date4
-    id<-input$stationid
+    id<-input$stationID
     
     ggplot(subset(gol_temp,stationid==id),aes(date,result,0.4))+
       geom_point()+
@@ -243,7 +223,7 @@ server <- function(input,output){
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
       ylab("Degrees Celcius")+
-      xlim(d)
+      xlim(d)+geom_smooth()
     
   })
   
