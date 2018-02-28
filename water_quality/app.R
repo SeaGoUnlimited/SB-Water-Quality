@@ -94,10 +94,7 @@ server <- function(input, output) {
       addMarkers(lng = -119.826228, lat = 34.417057, popup="Goleta Slough") %>% 
       addMarkers(lng=-119.874244,lat=34.417040,popup="Devereux Slough")
   })
-  #output$sb_map <- renderLeaflet ({
-  #sb_map<-leaflet() %>% 
-   #addTiles() %>% 
-  #addMarkers(lng=-119.6982, lat=34.4208, popup="Zooming maps")}
+  
   
    output$distPlot <- renderPlot({
       # generate bins based on input$bins from ui.R
@@ -118,6 +115,7 @@ server <- function(input, output) {
         xlim(d)
       
    })
+   
 }
 
 # Run the application 
