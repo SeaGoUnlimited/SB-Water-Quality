@@ -162,7 +162,7 @@ server <- function(input,output){
     d<-input$date
     id<-input$Stationid
     
-    ggplot(subset(gol_b_c,parametercode==p),aes(date,result,color=stationid,0.3))+
+    ggplot(subset(gol_b_c,parametercode==p ),aes(date,result,color=stationid,0.3))+
       geom_point()+
       theme_bw()+
       ggtitle("Goleta Bacteria Data")+
