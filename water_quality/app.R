@@ -45,6 +45,9 @@ beach_entero<-beach_bac %>%
 beach_total<-beach_bac %>% 
   filter(parametercode=="Total Coliforms")
 
+beach_fecal<-beach_bac %>% 
+  filter(parametercode=="Fecal Coliforms")
+
 #Goleta chemical dataset
 
 goleta_chem_sbck <- read_csv("~/github/SB-Water-Quality/goleta_chem_sbck.csv")
@@ -103,7 +106,7 @@ rain$date <- as.Date(with(rain, paste(year, month, day,sep="-")), "%Y-%m-%d")
 
 ui <- dashboardPage(
   
-  dashboardHeader(title="Beach Bacteria Concentrations"),
+  dashboardHeader(title="Beach Bacteria"),
   
   dashboardSidebar(
     
@@ -111,7 +114,8 @@ ui <- dashboardPage(
       
       menuItem("E. Coli",tabName = "tab_1"),
       menuItem("Enterococcus",tabName = "tab_2"),
-      menuItem("Total Coliforms",tabName = "tab_3")
+      menuItem("Total Coliforms",tabName = "tab_3"),
+      menuItem("Fecal Coliforms",tabName = "tab_4")
       
       
       
@@ -123,35 +127,45 @@ ui <- dashboardPage(
     tabItems(
       tabItem(tabName = "tab_1",
               fluidRow(
-                box(plotOutput("my_graph1",height = 700,width = 700)),
+                box(plotOutput("my_graph1",height = 500,width = 500)),
                 box(title = "E. Coli:",
-                    selectInput("stationid","Beach:",choices = unique(beach_bac$stationid)),
+                    selectInput("beach","Beach:",choices = unique(beach_ecoli$beach)),
                     dateRangeInput("date", "Date range:",
-                                   start = "2002-01-01",
-                                   end   = "2017-12-31")
+                                   start = "2004-01-01",
+                                   end   = "2017-04-01")
                 )
               )),
       tabItem(tabName = "tab_2",
               fluidRow(
-                box(plotOutput("my_graph2",height = 700,width = 700)),
+                box(plotOutput("my_graph2",height = 500,width = 500)),
                 box(title = "Enterococcus:",
-                    selectInput("stationid_2","Beach        :",choices = unique(beach_bac$stationid)),
+                    selectInput("beach_2","Beach:",choices = unique(beach_entero$beach)),
                     dateRangeInput("date2", "Date range:",
-                                   start = "2002-01-01",
-                                   end   = "2017-12-31")
+                                   start = "1998-01-01",
+                                   end   = "2018-03-01")
                 )
               )),
       tabItem(tabName = "tab_3",
               fluidRow(
-                box(plotOutput("my_graph3",height = 700,width=700)),
-                box(title = "Total Coliform:",
+                box(plotOutput("my_graph3",height = 500,width=500)),
+                box(title = "Total Coliforms:",
                     
-                    selectInput("stationid_3","Beach:",choices = unique(beach_total$stationid)),
+                    selectInput("beach_3","Beach:",choices = unique(beach_total$beach)),
                     
                     # Input: 
                     dateRangeInput("date3", "Date range:",
-                                   start = "2002-01-01",
-                                   end   = "2017-12-31"))
+                                   start = "2004-01-01",
+                                   end   = "2018-03-01"))
+              )),
+      tabItem(tabName = "tab_4",
+              fluidRow(
+                box(plotOutput("my_graph4",height = 500,width = 500)),
+                box(title = "Fecal Coliforms:",
+                    selectInput("beach_4","Beach:",choices = unique(beach_fecal$beach)),
+                    dateRangeInput("date4", "Date range:",
+                                   start = "2015-09-01",
+                                   end   = "2018-02-28")
+                )
               ))
       
       
@@ -173,10 +187,10 @@ server <- function(input,output){
     x <- beach_ecoli$result 
     p<-input$parametercode
     d<-input$date
-    id<-input$stationid
+    id<-input$beach
     
-    ggplot(subset(beach_ecoli,stationid==id ),aes(date,result,color=stationid,0.3))+
-      geom_line()+
+    ggplot(subset(beach_ecoli,beach==id ),aes(date,result,0.6))+
+      geom_line(color="blue")+
       theme_bw()+
       ggtitle("Beach E. Coli levels")+
       theme(plot.title = element_text(hjust = 0.5))+
@@ -193,10 +207,10 @@ server <- function(input,output){
     x <- beach_entero$result 
     p<-input$parametercode
     d<-input$date2
-    id<-input$stationid_2
+    id<-input$beach_2
     
-    ggplot(subset(beach_entero,stationid==id ),aes(date,result,color=stationid,0.3))+
-      geom_line()+
+    ggplot(subset(beach_entero,beach==id ),aes(date,result,0.4))+
+      geom_line(color="green")+
       theme_bw()+
       ggtitle("Beach Enterococcus Levels")+
       theme(plot.title = element_text(hjust = 0.5))+
@@ -214,12 +228,31 @@ server <- function(input,output){
     x <- beach_total$result 
     p<-input$parametercode
     d<-input$date3
-    id<-input$stationid_3
+    id<-input$beach_3
     
-    ggplot(subset(beach_total,stationid==id ),aes(date,result,color=stationid,0.3))+
+    ggplot(subset(beach_total,beach==id ),aes(date,result,color=stationid,0.3))+
       geom_line()+
       theme_bw()+
-      ggtitle("Goleta Bacteria Data")+
+      ggtitle("Total Coliforms")+
+      theme(plot.title = element_text(hjust = 0.5))+
+      xlab("Sample Date")+
+      ylab("MPN/100 mL")+
+      xlim(d)
+    
+    
+  })
+  
+  output$my_graph4<-renderPlot({
+    
+    x <- beach_total$result 
+    p<-input$parametercode
+    d<-input$date4
+    id<-input$beach_4
+    
+    ggplot(subset(beach_fecal,beach==id ),aes(date,result,0.3))+
+      geom_line(color="brown")+
+      theme_bw()+
+      ggtitle("Fecal Coliforms")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
       ylab("MPN/100 mL")+
