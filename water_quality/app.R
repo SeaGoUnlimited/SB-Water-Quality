@@ -52,6 +52,8 @@ beach_total<-beach_bac %>%
 beach_fecal<-beach_bac %>% 
   filter(parametercode=="Fecal Coliforms")
 
+View(beach_bac)
+
 #Goleta chemical dataset
 
 goleta_chem_sbck <- read_csv("~/github/SB-Water-Quality/goleta_chem_sbck.csv")
@@ -129,7 +131,7 @@ ui <- dashboardPage(
   dashboardBody(
     
     fluidRow(
-      box(leafletOutput("MapPlot1"))),
+      box(title = "Choose a Beach", leafletOutput("BeachMap"))),
     
     tabItems(
       tabItem(tabName = "tab_1",
@@ -187,12 +189,14 @@ ui <- dashboardPage(
 
 server <- function(input,output){
   
-  output$MapPlot1 <- renderLeaflet({
+  output$BeachMap <- renderLeaflet({
     leaflet() %>% 
       addTiles() %>% 
       setView(-119.847250,34.408614,zoom = 13) %>% 
-      addMarkers(lng = -119.826228, lat = 34.417057, popup="Goleta Slough") %>% 
-      addMarkers(lng=-119.874244,lat=34.417040,popup="Devereux Slough")
+      addMarkers(lng = -119.8322, lat = 34.4168, popup="Goleta Beach") %>% 
+      addMarkers(lng=-119.879890,lat= 34.408489,popup="Sands Beach") %>% 
+      addMarkers(lng=-119.780014,lat= 34.414687,popup="Hope Ranch Beach") %>% 
+      addMarkers(lng=-119.743515,lat= 34.403105,popup="Arroyo Burro Beach")
   })
   
   
