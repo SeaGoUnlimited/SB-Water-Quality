@@ -128,6 +128,9 @@ ui <- dashboardPage(
   
   dashboardBody(
     
+    fluidRow(
+      box(leafletOutput("MapPlot1"))),
+    
     tabItems(
       tabItem(tabName = "tab_1",
               fluidRow(
@@ -184,6 +187,13 @@ ui <- dashboardPage(
 
 server <- function(input,output){
   
+  output$MapPlot1 <- renderLeaflet({
+    leaflet() %>% 
+      addTiles() %>% 
+      setView(-119.847250,34.408614,zoom = 13) %>% 
+      addMarkers(lng = -119.826228, lat = 34.417057, popup="Goleta Slough") %>% 
+      addMarkers(lng=-119.874244,lat=34.417040,popup="Devereux Slough")
+  })
   
   
   output$my_graph1<-renderPlot({
