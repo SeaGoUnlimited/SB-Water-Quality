@@ -4,9 +4,13 @@ library(tidyverse)
 library(shinythemes)
 library(leaflet)
 library(shinydashboard)
+library(plotly)
 
 ###############################################
 
+#About: water quality parameters for 4 beaches, and several slough and creeks in the Goleta area. Goleta rain data was overlapped with this data to observe how rain events affect creeks, sloughs, and beaches. 
+
+#Ideally, we'd like to pull the most recent water quality and rain data, so the app platform would update itself, and possibly make water quality predictions into the future.
 
 #Goleta bacteria dataset
 gol_bac <- read_csv("~/github/SB-Water-Quality/gol_bac.csv")
@@ -190,14 +194,14 @@ server <- function(input,output){
     id<-input$beach
     
     ggplot(subset(beach_ecoli,beach==id ),aes(date,result,0.6))+
-      geom_line(color="blue")+
+      geom_col(color="blue")+
       theme_bw()+
       ggtitle("Beach E. Coli levels")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
       ylab("MPN/100 mL")+
-      xlim(d)+
-      geom_hline(yintercept = 1500)
+      xlim(d)
+    
     
     
   })
@@ -210,14 +214,14 @@ server <- function(input,output){
     id<-input$beach_2
     
     ggplot(subset(beach_entero,beach==id ),aes(date,result,0.4))+
-      geom_line(color="green")+
+      geom_col(color="green")+
       theme_bw()+
       ggtitle("Beach Enterococcus Levels")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
       ylab("MPN/100 mL")+
       xlim(d)+
-      geom_hline(yintercept = 1500)  
+      geom_hline(yintercept = 104)  
       
     
     
@@ -230,14 +234,15 @@ server <- function(input,output){
     d<-input$date3
     id<-input$beach_3
     
-    ggplot(subset(beach_total,beach==id ),aes(date,result,color=stationid,0.3))+
-      geom_line()+
+    ggplot(subset(beach_total,beach==id ),aes(date,result))+
+      geom_col(color="black")+
       theme_bw()+
       ggtitle("Total Coliforms")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
       ylab("MPN/100 mL")+
-      xlim(d)
+      xlim(d)+
+      geom_hline(yintercept = 10000)  
     
     
   })
@@ -249,14 +254,15 @@ server <- function(input,output){
     d<-input$date4
     id<-input$beach_4
     
-    ggplot(subset(beach_fecal,beach==id ),aes(date,result,0.3))+
-      geom_line(color="brown")+
+    ggplot(subset(beach_fecal,beach==id ),aes(date,result))+
+      geom_col(color="brown",alpha=0.7)+
       theme_bw()+
       ggtitle("Fecal Coliforms")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
       ylab("MPN/100 mL")+
-      xlim(d)
+      xlim(d)+
+      geom_hline(yintercept = 400)  
     
     
   })
