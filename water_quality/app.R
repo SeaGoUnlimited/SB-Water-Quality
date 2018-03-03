@@ -5,6 +5,7 @@ library(shinythemes)
 library(leaflet)
 library(shinydashboard)
 library(plotly)
+library(dplyr)
 
 ###############################################
 
@@ -33,6 +34,8 @@ Sands_bac <- read_csv("~/github/SB-Water-Quality/Sands_bac.csv")
 
 Arroyo_Burro_bac <- read_csv("~/github/SB-Water-Quality/Arroyo_Burro_bac.csv")
 
+
+#Combine into one dataframe
 beach_bac<-rbind(Goleta_bac_county,Hope_Ranch_bac,Sands_bac,Arroyo_Burro_bac) %>% 
   select("Station Name","Description","SampleDate","parameter","Result","unit")
 
@@ -40,24 +43,48 @@ beach_bac<-rbind(Goleta_bac_county,Hope_Ranch_bac,Sands_bac,Arroyo_Burro_bac) %>
 
 colnames(beach_bac)<-c("stationid","beach","date","parametercode","result","unit")
 
-beach_ecoli<-beach_bac %>% 
+##ADD RAIN DATASET AND COMBINE WITH BACTERIA DF
+
+#rainfall dataset
+Goleta_water_district_rainfall <- read_csv("~/github/SB-Water-Quality/Goleta_water_district_rainfall.csv")
+
+#rename 
+rain<-Goleta_water_district_rainfall 
+
+
+#combine year,month,day into new "date" column
+rain$date <- as.Date(with(rain, paste(year, month, day,sep="-")), "%Y-%m-%d")
+
+# Simplify rain dataframe
+r1<-rain %>% 
+  select("date","daily rain")
+
+#combine bacteria data frame and rain dataframe
+bac_rain_combo<-left_join(beach_bac,r1,by="date")
+
+bac_rain_combo[is.na(bac_rain_combo)]<-0
+
+#Divide beach bac into seprate bacteria parameters
+
+beach_ecoli<-bac_rain_combo %>% 
   filter(parametercode=="E. Coli")
 
-beach_entero<-beach_bac %>% 
+beach_entero<-bac_rain_combo %>% 
   filter(parametercode=="Enterococcus")
 
-beach_total<-beach_bac %>% 
+beach_total<-bac_rain_combo %>% 
   filter(parametercode=="Total Coliforms")
 
-beach_fecal<-beach_bac %>% 
+beach_fecal<-bac_rain_combo %>% 
   filter(parametercode=="Fecal Coliforms")
 
-View(beach_bac)
+
+
+####################################################
 
 #Goleta chemical dataset
 
 goleta_chem_sbck <- read_csv("~/github/SB-Water-Quality/goleta_chem_sbck.csv")
-View(goleta_chem_sbck)
 
 gol_c<-goleta_chem_sbck %>% 
   select(StationID,SampleDate,TestMaterial,ParameterCode,Result) 
@@ -88,16 +115,6 @@ gol_b_c$date<-as.Date(gol_b_c$date)
 
 
 #####################################
-
-
-#rainfall dataset
-Goleta_water_district_rainfall <- read_csv("~/github/SB-Water-Quality/Goleta_water_district_rainfall.csv")
-
-#rename 
-rain<-Goleta_water_district_rainfall
-
-#combine year,month,day into new "date" column
-rain$date <- as.Date(with(rain, paste(year, month, day,sep="-")), "%Y-%m-%d")
 
 ##############################################
 
