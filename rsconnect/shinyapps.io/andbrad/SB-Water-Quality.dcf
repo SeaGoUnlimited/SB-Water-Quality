@@ -1,0 +1,12 @@
+name: SB-Water-Quality
+title: SB-Water-Quality
+username:
+account: andbrad
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 292962
+bundleId: 1252409
+url: https://andbrad.shinyapps.io/SB-Water-Quality/
+when: 1520214234.17849
+asMultiple: FALSE
+asStatic: FALSE

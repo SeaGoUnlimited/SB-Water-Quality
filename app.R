@@ -14,7 +14,7 @@ library(dplyr)
 #Ideally, we'd like to pull the most recent water quality and rain data, so the app platform would update itself, and possibly make water quality predictions into the future.
 
 #Goleta bacteria dataset
-gol_bac <- read_csv("~/github/SB-Water-Quality/gol_bac.csv")
+gol_bac <- read_csv("gol_bac.csv")
 
 
 #Filtered for two bacteria, and lagoon water/simplify
@@ -26,13 +26,13 @@ colnames(gol_b)<-c("station","date","testmaterial","parametercode","result")
 ###################################################
 #Better bacteria datasets
 
-Goleta_bac_county <- read_csv("~/github/SB-Water-Quality/Goleta_bac_county.csv")
+Goleta_bac_county <- read_csv("Goleta_bac_county.csv")
 
-Hope_Ranch_bac <- read_csv("~/github/SB-Water-Quality/Hope_Ranch_bac.csv")
+Hope_Ranch_bac <- read_csv("Hope_Ranch_bac.csv")
 
-Sands_bac <- read_csv("~/github/SB-Water-Quality/Sands_bac.csv")
+Sands_bac <- read_csv("Sands_bac.csv")
 
-Arroyo_Burro_bac <- read_csv("~/github/SB-Water-Quality/Arroyo_Burro_bac.csv")
+Arroyo_Burro_bac <- read_csv("Arroyo_Burro_bac.csv")
 
 
 #Combine into one dataframe
@@ -46,7 +46,7 @@ colnames(beach_bac)<-c("stationid","beach","date","parametercode","result","unit
 ##ADD RAIN DATASET AND COMBINE WITH BACTERIA DF
 
 #rainfall dataset
-Goleta_water_district_rainfall <- read_csv("~/github/SB-Water-Quality/Goleta_water_district_rainfall.csv")
+Goleta_water_district_rainfall <- read_csv("Goleta_water_district_rainfall.csv")
 
 #rename 
 rain<-Goleta_water_district_rainfall 
@@ -84,7 +84,7 @@ beach_fecal<-bac_rain_combo %>%
 
 #Goleta chemical dataset
 
-goleta_chem_sbck <- read_csv("~/github/SB-Water-Quality/goleta_chem_sbck.csv")
+goleta_chem_sbck <- read_csv("goleta_chem_sbck.csv")
 
 gol_c<-goleta_chem_sbck %>% 
   select(StationID,SampleDate,TestMaterial,ParameterCode,Result) 
@@ -159,7 +159,6 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph1",height = 300,width = 500), width = 8, 
                     plotOutput("rain_graph",height = 300,width = 500)),
-                box(plotOutput("my_graph1",height = 500,width = 500), width = 8),
                 box(title = "E. Coli:",
                     background = "black",height  = NULL,
                     selectInput("beach","Beach:",choices = unique(beach_ecoli$beach)),
@@ -173,7 +172,6 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph2",height = 300,width = 500),width = 8,
                     plotOutput("rain_graph2",height = 300,width = 500)),
-                box(plotOutput("my_graph2",height = 500,width = 500),width = 8),
                 box(title = "Enterococcus:",
                     background = "black",
                     selectInput("beach_2","Beach:",choices = unique(beach_entero$beach)),
@@ -186,7 +184,6 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph3",height = 300,width=500), width = 8,
                     plotOutput("rain_graph3",height = 300,width = 500)),
-                box(plotOutput("my_graph3",height = 500,width=500), width = 8),
                 box(title = "Total Coliforms:",background = "black",
                     selectInput("beach_3","Beach:",choices = unique(beach_total$beach)),
                     
@@ -202,7 +199,6 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph4",height = 300,width = 500), width = 8,
                     plotOutput("rain_graph4",height = 300,width = 500)),
-                box(plotOutput("my_graph4",height = 500,width = 500), width = 8),
                 box(title = "Fecal Coliforms:",background = "black",
                     selectInput("beach_4","Beach:",choices = unique(beach_fecal$beach)),
                     dateRangeInput("date4", "Date range:",
