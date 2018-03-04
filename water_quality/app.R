@@ -157,6 +157,7 @@ ui <- dashboardPage(
     tabItems(
       tabItem(tabName = "tab_1",
               fluidRow(
+
                 box(plotOutput("my_graph1",height = 300,width = 500), width = 8, 
                     plotOutput("rain_graph",height = 300,width = 500)),
                 box(title = "E. Coli:",
