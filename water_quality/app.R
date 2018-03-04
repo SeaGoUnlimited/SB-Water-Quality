@@ -159,7 +159,6 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph1",height = 300,width = 500), width = 8, 
                     plotOutput("rain_graph",height = 300,width = 500)),
-                box(plotOutput("my_graph1",height = 500,width = 500), width = 8),
                 box(title = "E. Coli:",
                     background = "black",height  = NULL,
                     selectInput("beach","Beach:",choices = unique(beach_ecoli$beach)),
@@ -173,7 +172,6 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph2",height = 300,width = 500),width = 8,
                     plotOutput("rain_graph2",height = 300,width = 500)),
-                box(plotOutput("my_graph2",height = 500,width = 500),width = 8),
                 box(title = "Enterococcus:",
                     background = "black",
                     selectInput("beach_2","Beach:",choices = unique(beach_entero$beach)),
@@ -186,7 +184,6 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph3",height = 300,width=500), width = 8,
                     plotOutput("rain_graph3",height = 300,width = 500)),
-                box(plotOutput("my_graph3",height = 500,width=500), width = 8),
                 box(title = "Total Coliforms:",background = "black",
                     selectInput("beach_3","Beach:",choices = unique(beach_total$beach)),
                     
@@ -202,7 +199,6 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph4",height = 300,width = 500), width = 8,
                     plotOutput("rain_graph4",height = 300,width = 500)),
-                box(plotOutput("my_graph4",height = 500,width = 500), width = 8),
                 box(title = "Fecal Coliforms:",background = "black",
                     selectInput("beach_4","Beach:",choices = unique(beach_fecal$beach)),
                     dateRangeInput("date4", "Date range:",
