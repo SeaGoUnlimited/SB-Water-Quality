@@ -157,8 +157,12 @@ ui <- dashboardPage(
     tabItems(
       tabItem(tabName = "tab_1",
               fluidRow(
+<<<<<<< HEAD
                 box(plotOutput("my_graph1",height = 300,width = 500), width = 8, 
                     plotOutput("rain_graph",height = 300,width = 500)),
+=======
+                box(plotOutput("my_graph1",height = 500,width = 500), width = 8),
+>>>>>>> 118b1980e7e3d4f43c861f84a8f8b612bf212f54
                 box(title = "E. Coli:",
                     background = "black",height  = NULL,
                     selectInput("beach","Beach:",choices = unique(beach_ecoli$beach)),
@@ -170,8 +174,12 @@ ui <- dashboardPage(
               )),
       tabItem(tabName = "tab_2",
               fluidRow(
+<<<<<<< HEAD
                 box(plotOutput("my_graph2",height = 300,width = 500),width = 8,
                     plotOutput("rain_graph2",height = 300,width = 500)),
+=======
+                box(plotOutput("my_graph2",height = 500,width = 500),width = 8),
+>>>>>>> 118b1980e7e3d4f43c861f84a8f8b612bf212f54
                 box(title = "Enterococcus:",
                     background = "black",
                     selectInput("beach_2","Beach:",choices = unique(beach_entero$beach)),
@@ -182,8 +190,12 @@ ui <- dashboardPage(
               )),
       tabItem(tabName = "tab_3",
               fluidRow(
+<<<<<<< HEAD
                 box(plotOutput("my_graph3",height = 300,width=500), width = 8,
                     plotOutput("rain_graph3",height = 300,width = 500)),
+=======
+                box(plotOutput("my_graph3",height = 500,width=500), width = 8),
+>>>>>>> 118b1980e7e3d4f43c861f84a8f8b612bf212f54
                 box(title = "Total Coliforms:",background = "black",
                     selectInput("beach_3","Beach:",choices = unique(beach_total$beach)),
                     
@@ -197,8 +209,12 @@ ui <- dashboardPage(
               )),
       tabItem(tabName = "tab_4",
               fluidRow(
+<<<<<<< HEAD
                 box(plotOutput("my_graph4",height = 300,width = 500), width = 8,
                     plotOutput("rain_graph4",height = 300,width = 500)),
+=======
+                box(plotOutput("my_graph4",height = 500,width = 500), width = 8),
+>>>>>>> 118b1980e7e3d4f43c861f84a8f8b612bf212f54
                 box(title = "Fecal Coliforms:",background = "black",
                     selectInput("beach_4","Beach:",choices = unique(beach_fecal$beach)),
                     dateRangeInput("date4", "Date range:",
