@@ -231,7 +231,7 @@ server <- function(input,output){
     id<-input$beach
     
     ggplot(subset(beach_ecoli,beach==id ),aes(date,result,0.6))+
-      geom_col(color="blue")+
+      geom_col(color="red")+
       theme_bw()+
       ggtitle("Beach E. Coli levels")+
       theme(plot.title = element_text(hjust = 0.5))+
@@ -347,12 +347,12 @@ server <- function(input,output){
   
   output$rain_graph<-renderPlot({
     
-    x <- beach_ecoli$dailyrain 
+    x <- r1$dailyrain 
     p<-input$parametercode
     d<-input$date
     id<-input$beach
     
-    ggplot(subset(beach_ecoli,beach==id ),aes(date,dailyrain,0.6))+
+    ggplot(r1,aes(date,dailyrain,0.6))+
       geom_col(color="blue")+
       theme_bw()+
       ggtitle("Rainfall")+
@@ -365,12 +365,12 @@ server <- function(input,output){
   
   output$rain_graph2<-renderPlot({
     
-    x <- beach_ecoli$dailyrain 
+    x <- r1$dailyrain 
     p<-input$parametercode
-    d<-input$date
+    d<-input$date2
     id<-input$beach
     
-    ggplot(subset(beach_ecoli,beach==id ),aes(date,dailyrain,0.6))+
+    ggplot(r1,aes(date,dailyrain,0.6))+
       geom_col(color="blue")+
       theme_bw()+
       ggtitle("Rainfall")+
@@ -383,12 +383,12 @@ server <- function(input,output){
   
   output$rain_graph3<-renderPlot({
     
-    x <- beach_ecoli$dailyrain 
+    x <- r1$dailyrain 
     p<-input$parametercode
-    d<-input$date
+    d<-input$date3
     id<-input$beach
     
-    ggplot(subset(beach_ecoli,beach==id ),aes(date,dailyrain,0.6))+
+    ggplot(r1,aes(date,dailyrain,0.6))+
       geom_col(color="blue")+
       theme_bw()+
       ggtitle("Rainfall")+
@@ -401,19 +401,20 @@ server <- function(input,output){
   
   output$rain_graph4<-renderPlot({
     
-    r <- beach_ecoli$dailyrain 
+    x <- r1$dailyrain 
     p<-input$parametercode
-    d<-input$date
+    d<-input$date4
     id<-input$beach
     
-    ggplot(subset(beach_ecoli,beach==id ),aes(date,dailyrain,0.6))+
+    ggplot(r1,aes(date,dailyrain,0.6))+
       geom_col(color="blue")+
       theme_bw()+
       ggtitle("Rainfall")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Date")+
       ylab("Rain (inches)")+
-      xlim(d)
+      xlim(d)+
+     expand_limits(y=0)
     
   })
 
