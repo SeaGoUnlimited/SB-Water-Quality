@@ -57,7 +57,7 @@ rain$date <- as.Date(with(rain, paste(year, month, day,sep="-")), "%Y-%m-%d")
 
 # Simplify rain dataframe
 r1<-rain %>% 
-  select("date","daily rain")
+  select("date","dailyrain")
 
 #combine bacteria data frame and rain dataframe
 bac_rain_combo<-left_join(beach_bac,r1,by="date")
@@ -157,42 +157,52 @@ ui <- dashboardPage(
     tabItems(
       tabItem(tabName = "tab_1",
               fluidRow(
-                box(plotOutput("my_graph1",height = 500,width = 500),leafletOutput("BeachMap1",height = 500,width = 500),width = 8),
+                box(plotOutput("my_graph1",height = 500,width = 500), width = 8),
                 box(title = "E. Coli:",
                     background = "black",height  = NULL,
                     selectInput("beach","Beach:",choices = unique(beach_ecoli$beach)),
                     dateRangeInput("date", "Date range:", start = "2004-01-01", end   = "2017-04-01"),width = 4
-                )
+                ),
+                box(title = "Beach Map", 
+                    leafletOutput("BeachMap1",height = 250,width = 225),width = 4)
+              
               )),
       tabItem(tabName = "tab_2",
               fluidRow(
-                box(plotOutput("my_graph2",height = 500,width = 500),leafletOutput("BeachMap2",height = 500,width = 500),width = 8),
+                box(plotOutput("my_graph2",height = 500,width = 500),width = 8),
                 box(title = "Enterococcus:",
                     background = "black",
                     selectInput("beach_2","Beach:",choices = unique(beach_entero$beach)),
                     dateRangeInput("date2", "Date range:", start = "1998-01-01", end   = "2018-03-01"),width=4
-                )
+                ),
+                box(title = "Beach Map", 
+                    leafletOutput("BeachMap2",height = 250,width = 225),width = 4)
               )),
       tabItem(tabName = "tab_3",
               fluidRow(
-                box(plotOutput("my_graph3",height = 500,width=500),leafletOutput("BeachMap3",height = 500,width = 500),width = 8),
+                box(plotOutput("my_graph3",height = 500,width=500), width = 8),
                 box(title = "Total Coliforms:",background = "black",
                     selectInput("beach_3","Beach:",choices = unique(beach_total$beach)),
                     
                     # Input: 
                     dateRangeInput("date3", "Date range:",
                                    start = "2004-01-01",
-                                   end   = "2018-03-01"),width = 4)
+                                   end   = "2018-03-01"),width = 4
+                    ),
+                box(title = "Beach Map", 
+                    leafletOutput("BeachMap3",height = 250,width = 225),width = 4)
               )),
       tabItem(tabName = "tab_4",
               fluidRow(
-                box(plotOutput("my_graph4",height = 500,width = 500),leafletOutput("BeachMap4",height = 500,width = 500),width=8),
+                box(plotOutput("my_graph4",height = 500,width = 500), width = 8),
                 box(title = "Fecal Coliforms:",background = "black",
                     selectInput("beach_4","Beach:",choices = unique(beach_fecal$beach)),
                     dateRangeInput("date4", "Date range:",
                                    start = "2015-09-01",
                                    end   = "2018-02-28"),width=4
-                )
+                ),
+                box(title = "Beach Map", 
+                    leafletOutput("BeachMap4",height = 250,width = 225),width = 4)
               ))
       
       
@@ -232,7 +242,7 @@ server <- function(input,output){
   output$BeachMap1 <- renderLeaflet({
     leaflet() %>% 
       addTiles() %>% 
-      setView(-119.847250,34.408614,zoom = 11) %>% 
+      setView(-119.81,34.408614,zoom = 11) %>% 
       addMarkers(lng = -119.8322, lat = 34.4168, popup="Goleta Beach") %>% 
       addMarkers(lng=-119.879890,lat= 34.408489,popup="Sands Beach") %>% 
       addMarkers(lng=-119.780014,lat= 34.414687,popup="Hope Ranch Beach") %>% 
@@ -264,7 +274,7 @@ server <- function(input,output){
   output$BeachMap2 <- renderLeaflet({
     leaflet() %>% 
       addTiles() %>% 
-      setView(-119.847250,34.408614,zoom = 11) %>% 
+      setView(-119.81,34.408614,zoom = 11) %>% 
       addMarkers(lng = -119.8322, lat = 34.4168, popup="Goleta Beach") %>% 
       addMarkers(lng=-119.879890,lat= 34.408489,popup="Sands Beach") %>% 
       addMarkers(lng=-119.780014,lat= 34.414687,popup="Hope Ranch Beach") %>% 
@@ -294,7 +304,7 @@ server <- function(input,output){
   output$BeachMap3 <- renderLeaflet({
     leaflet() %>% 
       addTiles() %>% 
-      setView(-119.847250,34.408614,zoom = 11) %>% 
+      setView(-119.81,34.408614,zoom = 11) %>% 
       addMarkers(lng = -119.8322, lat = 34.4168, popup="Goleta Beach") %>% 
       addMarkers(lng=-119.879890,lat= 34.408489,popup="Sands Beach") %>% 
       addMarkers(lng=-119.780014,lat= 34.414687,popup="Hope Ranch Beach") %>% 
@@ -324,7 +334,7 @@ server <- function(input,output){
   output$BeachMap4 <- renderLeaflet({
     leaflet() %>% 
       addTiles() %>% 
-      setView(-119.847250,34.408614,zoom = 11) %>% 
+      setView(-119.81,34.408614,zoom = 11) %>% 
       addMarkers(lng = -119.8322, lat = 34.4168, popup="Goleta Beach") %>% 
       addMarkers(lng=-119.879890,lat= 34.408489,popup="Sands Beach") %>% 
       addMarkers(lng=-119.780014,lat= 34.414687,popup="Hope Ranch Beach") %>% 
