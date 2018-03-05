@@ -157,34 +157,34 @@ ui <- dashboardPage(
     tabItems(
       tabItem(tabName = "tab_1",
               fluidRow(
-                box(plotOutput("my_graph1",height = 300,width = 500), width = 8, 
+                box(plotOutput("my_graph1",height = 300,width = 500), width = 8, background="blue",align="center",
                     plotOutput("rain_graph",height = 300,width = 500)),
                 box(title = "E. Coli:",
-                    background = "black",height  = NULL,
+                    background = "blue",height  = NULL,
                     selectInput("beach","Beach:",choices = unique(beach_ecoli$beach)),
                     dateRangeInput("date", "Date range:", start = "2004-01-01", end   = "2017-04-01"),width = 4
                 ),
                 box(title = "Beach Map", 
-                    leafletOutput("BeachMap1",height = 250,width = 225),width = 4)
+                    leafletOutput("BeachMap1",height = 250,width = 225),width = 4,background="blue",align="center")
               
               )),
       tabItem(tabName = "tab_2",
               fluidRow(
-                box(plotOutput("my_graph2",height = 300,width = 500),width = 8,
+                box(plotOutput("my_graph2",height = 300,width = 500),width = 8,background="blue",align="center",
                     plotOutput("rain_graph2",height = 300,width = 500)),
                 box(title = "Enterococcus:",
-                    background = "black",
+                    background = "blue",
                     selectInput("beach_2","Beach:",choices = unique(beach_entero$beach)),
                     dateRangeInput("date2", "Date range:", start = "1998-01-01", end   = "2018-03-01"),width=4
                 ),
                 box(title = "Beach Map", 
-                    leafletOutput("BeachMap2",height = 250,width = 225),width = 4)
+                    leafletOutput("BeachMap2",height = 250,width = 225),width = 4,background="blue",align="center")
               )),
       tabItem(tabName = "tab_3",
               fluidRow(
-                box(plotOutput("my_graph3",height = 300,width=500), width = 8,
+                box(plotOutput("my_graph3",height = 300,width=500), width = 8,background="blue",align="center",
                     plotOutput("rain_graph3",height = 300,width = 500)),
-                box(title = "Total Coliforms:",background = "black",
+                box(title = "Total Coliforms:",background = "blue",
                     selectInput("beach_3","Beach:",choices = unique(beach_total$beach)),
                     
                     # Input: 
@@ -193,20 +193,20 @@ ui <- dashboardPage(
                                    end   = "2018-03-01"),width = 4
                     ),
                 box(title = "Beach Map", 
-                    leafletOutput("BeachMap3",height = 250,width = 225),width = 4)
+                    leafletOutput("BeachMap3",height = 250,width = 225),width = 4,background="blue",align="center")
               )),
       tabItem(tabName = "tab_4",
               fluidRow(
-                box(plotOutput("my_graph4",height = 300,width = 500), width = 8,
+                box(plotOutput("my_graph4",height = 300,width = 500), width = 8,background="blue",align="center",
                     plotOutput("rain_graph4",height = 300,width = 500)),
-                box(title = "Fecal Coliforms:",background = "black",
+                box(title = "Fecal Coliforms:",background = "blue",
                     selectInput("beach_4","Beach:",choices = unique(beach_fecal$beach)),
                     dateRangeInput("date4", "Date range:",
                                    start = "2015-09-01",
                                    end   = "2018-02-28"),width=4
                 ),
                 box(title = "Beach Map", 
-                    leafletOutput("BeachMap4",height = 250,width = 225),width = 4)
+                    leafletOutput("BeachMap4",height = 250,width = 225),width = 4,background="blue",align="center")
               ))
       
       
