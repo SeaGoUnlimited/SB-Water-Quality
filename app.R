@@ -8,7 +8,7 @@ library(plotly)
 library(dplyr)
 
 ###############################################
-#
+###
 #About: water quality parameters for 4 beaches, and several slough and creeks in the Goleta area. Goleta rain data was overlapped with this data to observe how rain events affect creeks, sloughs, and beaches. 
 
 #Ideally, we'd like to pull the most recent water quality and rain data, so the app platform would update itself, and possibly make water quality predictions into the future.
