@@ -3,6 +3,9 @@ Using Santa Barbara water quality data and preciitation data to visualize trends
 Water Quality Parameters include: E. Coli, Entroccocus, Turbidity, D.O., pH, Temperature, Nitrate, and Phosphate.
 
 
+####Ideas (3/4/2018)#####
+-Make it so the selected date sticks when you switch between inputs
+
 #####Ideas (3/1/2018): #######
 
 Swap out the channelkeeper data with the county data, at least for bacteria.
