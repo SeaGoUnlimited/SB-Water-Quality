@@ -43,6 +43,8 @@ beach_bac<-rbind(Goleta_bac_county,Hope_Ranch_bac,Sands_bac,Arroyo_Burro_bac) %>
 
 colnames(beach_bac)<-c("stationid","beach","date","parametercode","result","unit")
 
+beach_bac$date<-as.Date(beach_bac$date)
+
 ##ADD RAIN DATASET AND COMBINE WITH BACTERIA DF
 
 #rainfall dataset
@@ -58,25 +60,30 @@ rain$date <- as.Date(with(rain, paste(year, month, day,sep="-")), "%Y-%m-%d")
 # Simplify rain dataframe
 r1<-rain %>% 
   select("date","dailyrain")
+r1$date<-as.Date(r1$date)
 
 #combine bacteria data frame and rain dataframe
-bac_rain_combo<-left_join(beach_bac,r1,by="date")
+b_r<-merge(beach_bac,r1,by="date", all=TRUE)
 
-bac_rain_combo[is.na(bac_rain_combo)]<-0
+#b_r[is.na(b_r)]<-0
+
+beach_ecoli<-b_r %>% 
+  filter(parametercode=="E. Coli")
+
+beach_entero<-b_r %>% 
+  filter(parametercode=="Enterococcus")
+
+beach_total<-b_r %>% 
+  filter(parametercode=="Total Coliforms")
+
+beach_fecal<-b_r %>% 
+  filter(parametercode=="Fecal Coliforms")
+
+
+
 
 #Divide beach bac into seprate bacteria parameters
 
-beach_ecoli<-bac_rain_combo %>% 
-  filter(parametercode=="E. Coli")
-
-beach_entero<-bac_rain_combo %>% 
-  filter(parametercode=="Enterococcus")
-
-beach_total<-bac_rain_combo %>% 
-  filter(parametercode=="Total Coliforms")
-
-beach_fecal<-bac_rain_combo %>% 
-  filter(parametercode=="Fecal Coliforms")
 
 
 
@@ -165,7 +172,7 @@ ui <- dashboardPage(
                     dateRangeInput("date", "Date range:", start = "2004-01-01", end   = "2017-04-01"),width = 4
                 ),
                 box(title = "Beach Map", 
-                    leafletOutput("BeachMap1",height = 250,width = 225),width = 4,background="blue",align="center")
+                    leafletOutput("BeachMap1",height = 250,width = 225),width = 4,align="center")
               
               )),
       tabItem(tabName = "tab_2",
@@ -178,7 +185,7 @@ ui <- dashboardPage(
                     dateRangeInput("date2", "Date range:", start = "1998-01-01", end   = "2018-03-01"),width=4
                 ),
                 box(title = "Beach Map", 
-                    leafletOutput("BeachMap2",height = 250,width = 225),width = 4,background="blue",align="center")
+                    leafletOutput("BeachMap2",height = 250,width = 225),width = 4,align="center")
               )),
       tabItem(tabName = "tab_3",
               fluidRow(
@@ -193,7 +200,7 @@ ui <- dashboardPage(
                                    end   = "2018-03-01"),width = 4
                     ),
                 box(title = "Beach Map", 
-                    leafletOutput("BeachMap3",height = 250,width = 225),width = 4,background="blue",align="center")
+                    leafletOutput("BeachMap3",height = 250,width = 225),width = 4,align="center")
               )),
       tabItem(tabName = "tab_4",
               fluidRow(
@@ -206,7 +213,7 @@ ui <- dashboardPage(
                                    end   = "2018-02-28"),width=4
                 ),
                 box(title = "Beach Map", 
-                    leafletOutput("BeachMap4",height = 250,width = 225),width = 4,background="blue",align="center")
+                    leafletOutput("BeachMap4",height = 250,width = 225),width = 4,align="center")
               ))
       
       
@@ -230,7 +237,11 @@ server <- function(input,output){
     d<-input$date
     id<-input$beach
     
-    ggplot(subset(beach_ecoli,beach==id ),aes(date,result,0.6))+
+    
+    
+    
+    
+      ggplot(subset(beach_ecoli,beach==id ),aes(date,result,0.6))+
       geom_col(color="red")+
       theme_bw()+
       ggtitle("Beach E. Coli levels")+
@@ -239,7 +250,7 @@ server <- function(input,output){
       ylab("MPN/100 mL")+
       xlim(d)
     
-    
+   
     
   })
   
@@ -261,16 +272,15 @@ server <- function(input,output){
     d<-input$date2
     id<-input$beach_2
     
-    ggplot(subset(beach_entero,beach==id ),aes(date,result,0.4))+
-      geom_col(color="green")+
+    ggplot(subset(beach_entero,beach==id ),aes(date,result))+
+      geom_col(color="orange")+
       theme_bw()+
       ggtitle("Beach Enterococcus Levels")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
       ylab("MPN/100 mL")+
       xlim(d)+
-      geom_hline(yintercept = 104)  
-      
+      geom_hline(yintercept = 104)
     
     
   })
@@ -278,7 +288,7 @@ server <- function(input,output){
   output$BeachMap2 <- renderLeaflet({
     leaflet() %>% 
       addTiles() %>% 
-      setView(-119.81,34.408614,zoom = 11) %>% 
+      setView(-119.81,34.408614,zoom = 10) %>% 
       addMarkers(lng = -119.8322, lat = 34.4168, popup="Goleta Beach") %>% 
       addMarkers(lng=-119.879890,lat= 34.408489,popup="Sands Beach") %>% 
       addMarkers(lng=-119.780014,lat= 34.414687,popup="Hope Ranch Beach") %>% 
