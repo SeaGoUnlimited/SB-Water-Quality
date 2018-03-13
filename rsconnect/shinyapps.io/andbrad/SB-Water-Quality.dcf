@@ -5,8 +5,8 @@ account: andbrad
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 292962
-bundleId: 1252461
+bundleId: 1267196
 url: https://andbrad.shinyapps.io/SB-Water-Quality/
-when: 1520216857.66875
+when: 1520979928.67302
 asMultiple: FALSE
 asStatic: FALSE
