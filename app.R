@@ -4,26 +4,12 @@ library(tidyverse)
 library(shinythemes)
 library(leaflet)
 library(shinydashboard)
-library(plotly)
 library(dplyr)
 
 ###############################################
-###
-##
-#Test
-#About: water quality parameters for 4 beaches, and several slough and creeks in the Goleta area. Goleta rain data was overlapped with this data to observe how rain events affect creeks, sloughs, and beaches. 
+#About: water quality parameters for 4 beaches in the Santa Barbara area. Goleta rain data was overlapped with this data to observe how rain events affect beaches. 
 
 #Ideally, we'd like to pull the most recent water quality and rain data, so the app platform would update itself, and possibly make water quality predictions into the future.
-
-#Goleta bacteria dataset
-gol_bac <- read_csv("gol_bac.csv")
-
-
-#Filtered for two bacteria, and lagoon water/simplify
-gol_b<-gol_bac %>% 
-  select(StationID,SampleDate,TestMaterial,ParameterCode,Result) 
-
-colnames(gol_b)<-c("station","date","testmaterial","parametercode","result")
 
 ###################################################
 #Better bacteria datasets
@@ -81,54 +67,7 @@ beach_total<-b_r %>%
 beach_fecal<-b_r %>% 
   filter(parametercode=="Fecal Coliforms")
 
-
-
-
 #Divide beach bac into seprate bacteria parameters
-
-
-
-
-####################################################
-
-#Goleta chemical dataset
-
-goleta_chem_sbck <- read_csv("goleta_chem_sbck.csv")
-
-gol_c<-goleta_chem_sbck %>% 
-  select(StationID,SampleDate,TestMaterial,ParameterCode,Result) 
-
-colnames(gol_c)<-c("station","date","testmaterial","parametercode","result")
-
-
-#########Chemical df's
-
-gol_cond<-gol_c %>% 
-  filter(parametercode=="Conductivity")
-
-gol_temp<-gol_c %>% 
-  filter(parametercode=="Temp")
-
-gol_turb<-gol_c %>% 
-  filter(parametercode=="TURB")
-
-gol_ph<-gol_c %>% 
-  filter(parametercode=="pH")
-
-
-#combine bacteria and chem datasets
-gol_b_c<-rbind(gol_b,gol_c)
-
-gol_b_c$date<-as.Date(gol_b_c$date)
-
-
-
-#####################################
-
-##############################################
-
-
-
 
 
 
@@ -234,8 +173,7 @@ server <- function(input,output){
   
   output$my_graph1<-renderPlot({
     
-    x <- beach_ecoli$result 
-    p<-input$parametercode
+    
     d<-input$date
     id<-input$beach
     
@@ -269,8 +207,7 @@ server <- function(input,output){
   
   output$my_graph2<-renderPlot({
     
-    x <- beach_entero$result 
-    p<-input$parametercode
+   
     d<-input$date2
     id<-input$beach_2
     
@@ -299,8 +236,7 @@ server <- function(input,output){
   
   output$my_graph3<-renderPlot({
     
-    x <- beach_total$result 
-    p<-input$parametercode
+    
     d<-input$date3
     id<-input$beach_3
     
@@ -329,8 +265,7 @@ server <- function(input,output){
   
   output$my_graph4<-renderPlot({
     
-    x <- beach_total$result 
-    p<-input$parametercode
+    
     d<-input$date4
     id<-input$beach_4
     
@@ -359,8 +294,7 @@ server <- function(input,output){
   
   output$rain_graph<-renderPlot({
     
-    x <- r1$dailyrain 
-    p<-input$parametercode
+    
     d<-input$date
     id<-input$beach
     
@@ -377,8 +311,7 @@ server <- function(input,output){
   
   output$rain_graph2<-renderPlot({
     
-    x <- r1$dailyrain 
-    p<-input$parametercode
+    
     d<-input$date2
     id<-input$beach
     
@@ -395,10 +328,9 @@ server <- function(input,output){
   
   output$rain_graph3<-renderPlot({
     
-    x <- r1$dailyrain 
-    p<-input$parametercode
+    
     d<-input$date3
-    id<-input$beach
+    
     
     ggplot(r1,aes(date,dailyrain,0.6))+
       geom_col(color="blue")+
@@ -413,10 +345,8 @@ server <- function(input,output){
   
   output$rain_graph4<-renderPlot({
     
-    x <- r1$dailyrain 
-    p<-input$parametercode
+   
     d<-input$date4
-    id<-input$beach
     
     ggplot(r1,aes(date,dailyrain,0.6))+
       geom_col(color="blue")+
