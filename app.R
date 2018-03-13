@@ -168,7 +168,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph1",height = 300,width = 500), width = 8, background="blue",align="center",
                     plotOutput("rain_graph",height = 300,width = 500)),
-                box(title = "E. Coli:",
+                box(title = "E. Coli: No Defined Health Limit",
                     background = "blue",height  = NULL,
                     selectInput("beach","Beach:",choices = unique(beach_ecoli$beach)),
                     dateRangeInput("date", "Date range:", start = "2004-01-01", end   = "2017-04-01"),width = 4
@@ -181,7 +181,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph2",height = 300,width = 500),width = 8,background="blue",align="center",
                     plotOutput("rain_graph2",height = 300,width = 500)),
-                box(title = "Enterococcus:",
+                box(title = "Enterococcus: Health Standard (104 MPN/Liter)",
                     background = "blue",
                     selectInput("beach_2","Beach:",choices = unique(beach_entero$beach)),
                     dateRangeInput("date2", "Date range:", start = "1998-01-01", end   = "2018-03-01"),width=4
@@ -193,7 +193,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph3",height = 300,width=500), width = 8,background="blue",align="center",
                     plotOutput("rain_graph3",height = 300,width = 500)),
-                box(title = "Total Coliforms:",background = "blue",
+                box(title = "Total Coliforms: Health Standard (10,000 MPN/Liter) ",background = "blue",
                     selectInput("beach_3","Beach:",choices = unique(beach_total$beach)),
                     
                     # Input: 
@@ -208,7 +208,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph4",height = 300,width = 500), width = 8,background="blue",align="center",
                     plotOutput("rain_graph4",height = 300,width = 500)),
-                box(title = "Fecal Coliforms:",background = "blue",
+                box(title = "Fecal Coliforms: Health Standard (400 MPN/Liter)",background = "blue",
                     selectInput("beach_4","Beach:",choices = unique(beach_fecal$beach)),
                     dateRangeInput("date4", "Date range:",
                                    start = "2015-09-01",
