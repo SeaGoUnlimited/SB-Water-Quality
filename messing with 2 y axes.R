@@ -60,12 +60,15 @@ beach_fecal<-b_r %>%
 
 g<-ggplot(beach_ecoli,aes(date))
 
-  g<-g+geom_col(aes(y=result, color=beach))+theme_classic()
+  g<-g+geom_line(aes(y=result, color=beach))+theme_classic()
 
-  g<-g+geom_point(aes(y=dailyrain*5000,color="blue",alpha=2))
+  g<-g+geom_point(aes(y=dailyrain*5000,color="rain"))
 
   g<-g + scale_y_continuous(sec.axis = sec_axis(~.*.0002, name = "Daily Rain (inches)")) 
   
   g
+
+  pg<-ggplotly(g)  
   
+  pg
   
