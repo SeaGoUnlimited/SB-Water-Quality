@@ -290,7 +290,7 @@ server <- function(input,output){
   output$BeachMap2 <- renderLeaflet({
     leaflet() %>% 
       addTiles() %>% 
-      setView(-119.81,34.408614,zoom = 10) %>% 
+      setView(-119.81,34.408614,zoom = 11) %>% 
       addMarkers(lng = -119.8322, lat = 34.4168, popup="Goleta Beach") %>% 
       addMarkers(lng=-119.879890,lat= 34.408489,popup="Sands Beach") %>% 
       addMarkers(lng=-119.780014,lat= 34.414687,popup="Hope Ranch Beach") %>% 
@@ -369,7 +369,7 @@ server <- function(input,output){
       theme_bw()+
       ggtitle("Rainfall")+
       theme(plot.title = element_text(hjust = 0.5))+
-      xlab("Date")+
+      xlab("Sample Date")+
       ylab("Rain (inches)")+
       xlim(d)
   
@@ -387,7 +387,7 @@ server <- function(input,output){
       theme_bw()+
       ggtitle("Rainfall")+
       theme(plot.title = element_text(hjust = 0.5))+
-      xlab("Date")+
+      xlab("Sample Date")+
       ylab("Rain (inches)")+
       xlim(d)
     
@@ -405,7 +405,7 @@ server <- function(input,output){
       theme_bw()+
       ggtitle("Rainfall")+
       theme(plot.title = element_text(hjust = 0.5))+
-      xlab("Date")+
+      xlab("Sample Date")+
       ylab("Rain (inches)")+
       xlim(d)
     
@@ -423,7 +423,7 @@ server <- function(input,output){
       theme_bw()+
       ggtitle("Rainfall")+
       theme(plot.title = element_text(hjust = 0.5))+
-      xlab("Date")+
+      xlab("Sample Date")+
       ylab("Rain (inches)")+
       xlim(d)+
      expand_limits(y=0)
