@@ -31,6 +31,8 @@ beach_bac<-rbind(Goleta_bac_county,Hope_Ranch_bac,Sands_bac,Arroyo_Burro_bac) %>
 
 colnames(beach_bac)<-c("stationid","beach","date","parametercode","result","unit")
 
+beach_bac$log<-(log10(beach_bac$result))
+
 beach_bac$date<-as.Date(beach_bac$date)
 
 ##ADD RAIN DATASET AND COMBINE WITH BACTERIA DF
@@ -120,7 +122,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph2",height = 300,width = 500),width = 8,background="blue",align="center",
                     plotOutput("rain_graph2",height = 300,width = 500)),
-                box(title = "Enterococcus: Health Standard (104 MPN/Liter)",
+                box(title = "Enterococcus: Health Standard: log (104 MPN/Liter)=2.017",
                     background = "blue",
                     selectInput("beach_2","Beach:",choices = unique(beach_entero$beach)),
                     dateRangeInput("date2", "Date range:", start = "1998-01-01", end   = "2018-03-01"),width=4
@@ -132,7 +134,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph3",height = 300,width=500), width = 8,background="blue",align="center",
                     plotOutput("rain_graph3",height = 300,width = 500)),
-                box(title = "Total Coliforms: Health Standard (10,000 MPN/Liter) ",background = "blue",
+                box(title = "Total Coliforms: Health Standard: log (10,000 MPN/Liter)=4 ",background = "blue",
                     selectInput("beach_3","Beach:",choices = unique(beach_total$beach)),
                     
                     # Input: 
@@ -147,7 +149,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("my_graph4",height = 300,width = 500), width = 8,background="blue",align="center",
                     plotOutput("rain_graph4",height = 300,width = 500)),
-                box(title = "Fecal Coliforms: Health Standard (400 MPN/Liter)",background = "blue",
+                box(title = "Fecal Coliforms: Health Standard: log(400 MPN/Liter)=2.60",background = "blue",
                     selectInput("beach_4","Beach:",choices = unique(beach_fecal$beach)),
                     dateRangeInput("date4", "Date range:",
                                    start = "2015-09-01",
@@ -181,13 +183,13 @@ server <- function(input,output){
     
     
     
-      ggplot(subset(beach_ecoli,beach==id ),aes(date,result,0.6))+
+      ggplot(subset(beach_ecoli,beach==id ),aes(date,log,0.6))+
       geom_col(color="red")+
       theme_bw()+
       ggtitle("Beach E. Coli levels")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
-      ylab("MPN/100 mL")+
+      ylab("log (MPN/100 mL)")+
       xlim(d)
     
    
@@ -211,15 +213,15 @@ server <- function(input,output){
     d<-input$date2
     id<-input$beach_2
     
-    ggplot(subset(beach_entero,beach==id ),aes(date,result))+
+    ggplot(subset(beach_entero,beach==id ),aes(date,log))+
       geom_col(color="orange")+
       theme_bw()+
       ggtitle("Beach Enterococcus Levels")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
-      ylab("MPN/100 mL")+
+      ylab("log (MPN/100 mL)")+
       xlim(d)+
-      geom_hline(yintercept = 104)
+      geom_hline(yintercept = 2.017033)
     
     
   })
@@ -240,15 +242,15 @@ server <- function(input,output){
     d<-input$date3
     id<-input$beach_3
     
-    ggplot(subset(beach_total,beach==id ),aes(date,result))+
+    ggplot(subset(beach_total,beach==id),aes(date,log))+
       geom_col(color="black")+
       theme_bw()+
       ggtitle("Total Coliforms")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
-      ylab("MPN/100 mL")+
+      ylab("log (MPN/100 mL)")+
       xlim(d)+
-      geom_hline(yintercept = 10000)  
+      geom_hline(yintercept = 4)  
     
     
   })
@@ -269,15 +271,15 @@ server <- function(input,output){
     d<-input$date4
     id<-input$beach_4
     
-    ggplot(subset(beach_fecal,beach==id ),aes(date,result))+
+    ggplot(subset(beach_fecal,beach==id ),aes(date,log))+
       geom_col(color="brown",alpha=0.7)+
       theme_bw()+
       ggtitle("Fecal Coliforms")+
       theme(plot.title = element_text(hjust = 0.5))+
       xlab("Sample Date")+
-      ylab("MPN/100 mL")+
+      ylab("log (MPN/100 mL)")+
       xlim(d)+
-      geom_hline(yintercept = 400)  
+      geom_hline(yintercept = 2.6020599)  
     
     
   })
